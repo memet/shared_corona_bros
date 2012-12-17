@@ -1,19 +1,27 @@
-local titleBackground=display.newRect(50,50,200,50)
-titleBackground:setFillColor(200,200,200)
-local title=display.newText("Tracker",70,55,nil,36)
-title:setTextColor(0,0,0)
+-- Bouncing Ball --
+local xdirection,ydirection=1,1
+local xpos,ypos=display.contentWidth*0.5,display.contentHeight*0.5
+local circle = display.newCircle(xpos,ypos,20)
+circle:setFillColor(255,0,0,255)
 
-
-local widget=require "widget"
-local function onButtonRelease(event)
-	local btn=event.target
-	print("user has pressed and released the button")
-	btn:setLabel("doh! not yet !")
+local function animate(event)
+	xpos=xpos+(2.8*xdirection)
+	ypos=ypos+(2.2*ydirection)
+	
+	if (xpos>display.contentWidth-20 or xpos<20) then
+		xdirection=xdirection*-1
+	end
+	if (ypos>display.contentHeight-20 or ypos<20) then
+		ydirection=ydirection*-1
+	end
+	circle:translate(xpos-circle.x,ypos-circle.y)
 end
-local button=widget.newButton{
-	label="My Location",
-	fontSize=20,
-	onRelease=onButtonRelease
-}
-button.x=display.contentWidth*0.5
-button.y=display.contentHeight*0.5
+a=1
+local myListener = function(event)
+	print(circle.x)
+	a=a+1
+end
+
+
+Runtime:addEventListener("enterFrame",animate)
+Runtime:addEventListener("enterFrame",myListener)
